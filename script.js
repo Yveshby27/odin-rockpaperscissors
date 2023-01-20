@@ -35,7 +35,8 @@ else if(ps==='paper')
     else
     draw=true;
 }
-else{
+else
+{
     if(computerselection==='paper')
     win=true;
     else if(computerselection==='rock')
@@ -43,12 +44,23 @@ else{
     else
     draw=true;
 }
+
 if(win===true)
-result=`You win!${playerselection} beats ${computerselection}`;
+{
+console.log(`You win!${playerselection} beats ${computerselection}`);
+result=1;
+}
 else if(lose===true)
-result=`You lose.${computerselection} beats ${playerselection}`;
+{
+    
+console.log(`You lose.${computerselection} beats ${playerselection}`);
+result=-1;
+}
 else
-result=`Draw`;
+{
+console.log(`Draw`);
+result=0;
+}
 return result;
 }
 function isValid(playerselection)
@@ -57,3 +69,24 @@ function isValid(playerselection)
     return true;
     return false;
 }
+
+function game()
+{
+    let ps;
+    let userscore=0;
+    let computerscore=0;
+    for(let i=0;i<5;i++)
+    {
+        ps=prompt('Enter an answer');
+        pr=playround(ps,getcomputerchoice());
+        if(pr===1)
+        userscore++;
+        else if(pr===-1)
+        computerscore++;
+    }
+    if(userscore>computerscore)
+    console.log(`YOU WIN.Score:${userscore}-${computerscore}`);
+    else
+    console.log(`YOU LOSE.Score:${userscore}-${computerscore}`);
+}
+game();
