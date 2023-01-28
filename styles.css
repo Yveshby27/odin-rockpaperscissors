@@ -1,0 +1,40 @@
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+.button-container{
+    display:flex;
+    justify-content:center;
+    gap:100px;
+    margin-top: 150px;
+}
+button{
+    font-size:25px;
+    border-radius: 8px;
+}
+button#rock{
+    background-color: red;
+
+}
+button#paper{
+    background-color: lightgreen;
+}
+button#scissors{
+    background-color: rgb(58, 201, 248);
+} 
+.score{
+    text-align: center;
+    font-size: large;
+}
+.final-result{
+    text-align: center;
+    font-size: 40px;
+}
+.final-result.win{
+    color:green;
+}
+.final-result.loss{
+    color:red;
+}
