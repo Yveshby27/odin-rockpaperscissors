@@ -1,4 +1,8 @@
-function getcomputerchoice()//gets the computer's selection
+const choiceButtons=document.querySelectorAll('button');
+const score=document.querySelector('.score');
+const finalResult=document.querySelector('.final-result');
+
+function getComputerChoice()//gets the computer's selection
 {
     let choice;
     const arrofchoices=['rock','paper','scissors'];//possible choices for computer
@@ -6,40 +10,38 @@ function getcomputerchoice()//gets the computer's selection
     choice=arrofchoices[random];//randomly picks an element in the array of choices(arrofchoices)
     return choice;
 }
-function playround(playerselection,computerselection)//plays 1 round of the game
+
+function playRound(playerSelection,computerSelection)//plays 1 round of the game
 {
     let win=false;
     let draw=false;
     let lose=false;//win,lose and draw are all false since the round has not begun yet
     let result;//this will contain the value that will be returned
-    while(isValid(playerselection)===false)//if the answer is invalid
-    {
-        playerselection=prompt("Enter a valid answer(rock-paper-scissors)");//keep repeating till user enters a valid answer
-    }
-    let ps=playerselection.toLowerCase();//turn the user answer to lower case 
-if(ps==='rock')//if user entered rock
+    
+
+if(playerSelection==='rock')//if user entered rock
 {
-    if(computerselection==='scissors')
+    if(computerSelection==='scissors')
     win=true;//rock beats scissors
-    else if(computerselection==='paper')
+    else if(computerSelection==='paper')
     lose=true;//paper beats rock
     else
     draw=true;//tie, the user and the computer both have the same value(draw)
 }
-else if(ps==='paper')
+else if(playerSelection==='paper')
 {
-    if(computerselection==='rock')
+    if(computerSelection==='rock')
     win=true;//paper beats rock
-    else if(computerselection==='scissors')
+    else if(computerSelection==='scissors')
     lose=true;//scissors beats paper
     else
     draw=true;
 }
 else//scissors
 {
-    if(computerselection==='paper')
+    if(computerSelection==='paper')
     win=true;//scissors beats paper
-    else if(computerselection==='rock')
+    else if(computerSelection==='rock')
     lose=true;//rock beats scissors
     else
     draw=true;
@@ -47,47 +49,59 @@ else//scissors
 
 if(win===true)//if user wins
 {
-console.log(`You win!${playerselection} beats ${computerselection}`);
+score.textContent=`You win!${playerSelection} beats ${computerSelection}`;
 result=1;
 }
 else if(lose===true)//if user loses
 { 
-console.log(`You lose.${computerselection} beats ${playerselection}`);
+score.textContent=`You lose.${computerSelection} beats ${playerSelection}`;
 result=-1;
 }
 else//if it's a tie
 {
-console.log(`Draw.`);
+score.textContent=`Draw`;
 result=0;
 }
 return result;//return 1 if user wins, 2 if user loses and 0 if it's a draw
 }
-function isValid(playerselection)//check if the answer enter by the user is valid
+let userscore=0;
+let computerscore=0;
+function game()
 {
-    if(playerselection.toLowerCase()==='rock' || playerselection.toLowerCase()==='paper' || playerselection.toLowerCase()==='scissors')//answer has to be one of rock,paper or scissors
-    return true;//return true if valid
-    return false;//return false if invalid 
-}
-
-function game()//plays 5 rounds of the game
-{
-    let ps;
-    let userscore=0;//initial score of the user
-    let computerscore=0;//initial score of the computer
-    for(let i=0;i<5;i++)//runs 5 times
+choiceButtons.forEach(button=>{
+    
+    button.addEventListener('click',function play()
     {
-        ps=prompt('Enter an answer');
-        pr=playround(ps,getcomputerchoice());//store the playround() function in a variable named pr
-        if(pr===1)//if playround() returns 1=>user wins=>increment score for user
+        let ps=button.textContent;//for example:ps='rock' if user clicks the 'rock' button;
+        let cs=getComputerChoice();
+        let pr=playRound(ps,cs);
+        if(pr===1)//user wins round
         userscore++;
-        else if(pr===-1)//if playround() returns -1=>user loses=>increment score for computer
+        else if(pr===-1)//user loses round
         computerscore++;
-    }
-    if(userscore>computerscore)//if the total score of the user is greater than that of the computer's
-    console.log(`YOU WIN.Score:${userscore}-${computerscore}`);
-    else if(userscore<computerscore)//if the total score of the user is less than that of the computer's
-    console.log(`YOU LOSE.Score:${userscore}-${computerscore}`);
-    else//if the user and the computer have the same score 
-    console.log(`DRAW.Score:${userscore}-${computerscore}`);
+        score.textContent=score.textContent+`.${userscore}-${computerscore}`;//keeps track of the current score
+        if(userscore===5 ||computerscore===5)
+        {
+            if(userscore>computerscore)
+            {
+            finalResult.textContent=`YOU WIN.${userscore}-${computerscore}`;
+                finalResult.classList.toggle('win');
+            }
+            else 
+            {
+                finalResult.textContent=`YOU LOSE.${userscore}-${computerscore}`;
+                finalResult.classList.toggle('loss');
+            }
+           endGame();//if either player reaches 5 points, end the game
+        }
+    });
+});
+}
+function endGame()
+{
+    choiceButtons.forEach(button=>{
+        button.remove();//removes the choice buttons since the game is over
+       })
+       score.remove();//removes the display of the current score since the final result will be displayed
 }
 game();
